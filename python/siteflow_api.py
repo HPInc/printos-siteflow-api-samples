@@ -5,10 +5,12 @@ __author__ = 'printos'
 import requests, json, hmac, hashlib, datetime, base64, string, random
 
 #access credentials
-token = ''
+#baseUrl = "https://printos.api.hp.com/siteflow"		#use for production server account
+baseUrl = "https://stage.printos.api.hp.com/siteflow"	#use for staging server account
+key = ''
 secret = ''
 destination = 'hp.jpeng'
-endpoint = "https://stage.printos.api.hp.com/siteflow"
+
 
 #--------------------------------------------------------------#
 
@@ -25,18 +27,18 @@ def cancel_order(sourceAccount, order_id):
 	path = '/api/order/' + sourceAccount + '/' + order_id + "/cancel"
 	timestamp = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 	headers = create_headers("PUT", path, timestamp)
-	url = endpoint + path
+	url = baseUrl + path
 	print("URL: " + url)
 	return requests.put(url, headers=headers)
 
 
 '''
-Creates the header using the token/secret which
+Creates the header using the key/secret which
 allows you to make the API calls
 
 Params:
   method - type of method (POST, GET, PUT, etc)
-  path - api path (excluding the base endpoint)
+  path - api path (excluding the base url)
   timestamp - current time in specified format
 '''
 def create_headers(method, path, timestamp):
@@ -44,7 +46,7 @@ def create_headers(method, path, timestamp):
 	local_secret = secret.encode('utf-8')
 	string_to_sign = string_to_sign.encode('utf-8')
 	signature = hmac.new(local_secret, string_to_sign, hashlib.sha1).hexdigest()
-	genesis_auth = token + ':' + signature
+	genesis_auth = key + ':' + signature
 	return {'content-type': 'application/json',
 		'x-hp-hmac-authentication': genesis_auth,
 		'x-hp-hmac-date': timestamp,
@@ -92,13 +94,13 @@ def print_json(data):
 GET call
 
 Params:
-  path - api path (excluding the base endpoint)
+  path - api path (excluding the base url)
 '''
 def request_get(path):
 	print("In request_get() function")
 	timestamp = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 	print(" Timestamp: ", timestamp)
-	url = endpoint + path
+	url = baseUrl + path
 	headers = create_headers("GET", path, timestamp)
 	result = requests.get(url, headers=headers)
 	return result
@@ -108,14 +110,14 @@ def request_get(path):
 POST call
 
 Params:
-  path - api path (excluding the base endpoint)
+  path - api path (excluding the base url)
   data - data to be posted
 '''
 def request_post(path, data):
 	print("In request_post() function")
 	timestamp = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 	print(" Timestamp: ", timestamp)
-	url = endpoint + path
+	url = baseUrl + path
 	headers = create_headers("POST", path, timestamp)
 	result = requests.post(url, data, headers=headers)
 	return result
@@ -202,10 +204,10 @@ shipment = {
 #Put the complete order together
 order = {
 	"destination": {
-		"name": destination												#This will be the source folder name you use to cancel an order through the API (see cancel_order())
+		"name": destination												
 	},
 	"orderData": {
-		"sourceOrderId": orderId,										#This will be the ID you use to cancel an order through the API (see cancel_order())
+		"sourceOrderId": orderId,										
 		"postbackAddress": postbackAddress,
 		"items": [ item ],
 		"shipments": [ shipment ]
@@ -215,8 +217,8 @@ order = {
 #--------------------------------------------------------------#
 
 
-#print_json(validate_order(json.dumps(order)))							#validate the order
-#print_json(submit_order(json.dumps(order)))							#submit the order
-#print_json(get_all_orders())											#get info on all orders
-#print_json(get_order("57bf4ce74423bc0f00ab62bf"))						#get info about the order
-#print_json(cancel_order("hp.jpeng", "N2PR7N"))							#cancel the order
+print_json(validate_order(json.dumps(order)))							
+#print_json(submit_order(json.dumps(order)))							
+#print_json(get_all_orders())											
+#print_json(get_order("OrderId"))						
+#print_json(cancel_order("hp.jpeng", "sourceOrderId"))							
