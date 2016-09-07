@@ -1,0 +1,245 @@
+Submitting Order
+In request_post() function
+ Timestamp:  2016-09-07T20:42:13Z
+{
+    "order": {
+        "__v": 1,
+        "_id": "57d07ba6872ba4110086ca0d",
+        "destination": {
+            "id": "57ad022fc3af860f00c7ed4e",
+            "name": "hp.jpeng"
+        },
+        "files": [
+            {
+                "__v": 0,
+                "_id": "57d07ba6872ba4110086ca13",
+                "barcodes": [],
+                "componentId": "57d07ba6872ba4110086ca0f",
+                "created": "2016-09-07T20:42:14.698Z",
+                "currentRevision": 1,
+                "currentVersionId": "57d07ba67362ad110000005a",
+                "destination": {
+                    "id": "57ad022fc3af860f00c7ed4e",
+                    "name": "hp.jpeng"
+                },
+                "duplicate": 1,
+                "error": {
+                    "code": 0,
+                    "message": ""
+                },
+                "errorCheck": true,
+                "fetch": true,
+                "fetchUrl": "https://Server/Path/business_cards.pdf",
+                "fileSize": 0,
+                "infotech": false,
+                "infotechCopies": 1,
+                "infotechExternal": false,
+                "infotechImpose": false,
+                "infotechPadding": 1,
+                "legacyWorkQueue": true,
+                "localFile": false,
+                "localInfo": "",
+                "localProgress": 0,
+                "localStatus": "notreceived",
+                "orderId": "57d07ba6872ba4110086ca0d",
+                "orderTime": "2016-09-07T20:42:14.698Z",
+                "pageCount": 0,
+                "pageRotation": 0,
+                "path": "business_cards.pdf",
+                "preflight": false,
+                "preflightImageRes": 300,
+                "preflightProfile": "",
+                "preflightReport": [],
+                "proof": false,
+                "simplex": false,
+                "source": {
+                    "id": "57ad022fc3af860f00c7ed4e",
+                    "name": "hp.jpeng"
+                },
+                "status": "notreceived",
+                "syncComplete": false,
+                "syncRequired": false,
+                "type": "artwork",
+                "versions": [
+                    {
+                        "_id": "57d07ba67362ad110000005a",
+                        "error": {
+                            "code": 0,
+                            "message": ""
+                        },
+                        "fileSize": 0,
+                        "pageConfigs": [],
+                        "pageCount": 0,
+                        "pages": [],
+                        "paths": {
+                            "fetchUrl": "https://Server/Path/business_cards.pdf",
+                            "localFilename": "business_cards.pdf",
+                            "pageThumbnailPath": "",
+                            "thumbnailPath": ""
+                        },
+                        "preflightReport": [],
+                        "revision": 1,
+                        "status": "notreceived",
+                        "syncComplete": false
+                    }
+                ]
+            }
+        ],
+        "logs": [
+            {
+                "level": "info",
+                "message": "Order created",
+                "resourceId": "57d07ba6872ba4110086ca0d",
+                "resourceType": "order",
+                "timestamp": "2016-09-07T20:42:14.686Z"
+            },
+            {
+                "level": "info",
+                "message": "Added file to order",
+                "resourceId": "57d07ba6872ba4110086ca13",
+                "resourceType": "file",
+                "timestamp": "2016-09-07T20:42:14.712Z"
+            }
+        ],
+        "orderData": {
+            "amount": 0,
+            "attributes": [],
+            "colour": "black",
+            "consolidatedInvoice": false,
+            "currency": "GBP",
+            "date": "2016-09-07T20:42:14.665Z",
+            "items": [
+                {
+                    "_id": "57d07ba6872ba4110086ca0e",
+                    "attributes": [],
+                    "barcode": "B3000A8B51",
+                    "binding": "none",
+                    "components": [
+                        {
+                            "_id": "57d07ba6872ba4110086ca0f",
+                            "attributes": {
+                                "cut": "To Trim",
+                                "orientation": "Landscape",
+                                "pageSize": "50 x 90 mm",
+                                "substrate": "Coated",
+                                "substrateWeight": "300 gsm"
+                            },
+                            "barcode": "B4000A8B52",
+                            "barcodes": [],
+                            "batchImpositionId": "57ad0231c3af860f00c7ed5b",
+                            "code": "Content",
+                            "colour": {
+                                "side1": "4process",
+                                "side2": "4process"
+                            },
+                            "duplicate": 1,
+                            "errorCheck": true,
+                            "fetch": true,
+                            "fileId": "57d07ba6872ba4110086ca13",
+                            "finish": {
+                                "side1": "none",
+                                "side2": "none"
+                            },
+                            "height": 55,
+                            "infotech": false,
+                            "infotechCopies": 1,
+                            "infotechExternal": false,
+                            "infotechImpose": false,
+                            "infotechPadding": 1,
+                            "legacyWorkQueue": true,
+                            "localFile": false,
+                            "nup": 1,
+                            "pages": 2,
+                            "paperId": "57ad0231c3af860f00c7ed54",
+                            "path": "https://Server/Path/business_cards.pdf",
+                            "preflight": false,
+                            "preflightImageRes": 300,
+                            "preflightProfile": "",
+                            "proof": false,
+                            "reprintCount": 0,
+                            "route": [],
+                            "simplex": false,
+                            "status": "live",
+                            "type": "press",
+                            "weight": "200",
+                            "width": 90
+                        }
+                    ],
+                    "dispatchAlert": "",
+                    "folding": "none",
+                    "printQuantity": 1,
+                    "productDescription": "Business Cards",
+                    "quantity": 1,
+                    "reprintCount": 0,
+                    "scanned": 0,
+                    "shipmentIndex": 0,
+                    "sku": "Business Cards",
+                    "sourceItemId": "16FY89",
+                    "status": "live",
+                    "totalPages": 2,
+                    "unitCost": 0.1,
+                    "unitPrice": 1,
+                    "unitWeight": 5
+                }
+            ],
+            "messages": [],
+            "postbackAddress": "http://postback.genesis.com",
+            "postbackMethod": "none",
+            "printType": "digital",
+            "publicUploads": false,
+            "reprint": false,
+            "reprintCount": 0,
+            "shipments": [
+                {
+                    "_id": "57d07ba6872ba4110086ca10",
+                    "agentJobs": [],
+                    "attachments": [],
+                    "canShipEarly": true,
+                    "carrier": {
+                        "code": "customer",
+                        "service": "shipping",
+                        "serviceId": "57ad0231c3af860f00c7ee0d"
+                    },
+                    "componentIds": [],
+                    "expectedQuantity": 0,
+                    "itemIds": [],
+                    "items": [],
+                    "jobIds": [],
+                    "labelName": "default",
+                    "labelNotRequired": false,
+                    "manuallyPacked": false,
+                    "packages": [],
+                    "partial": false,
+                    "printJobs": [],
+                    "pspBranding": true,
+                    "scannedQuantity": 0,
+                    "shipTo": {
+                        "address1": "5th Avenue",
+                        "email": "johnd@acme.com",
+                        "isoCountry": "US",
+                        "name": "John Doe",
+                        "phone": "01234567890",
+                        "postcode": "12345",
+                        "state": "New York",
+                        "town": "New York"
+                    },
+                    "shipmentIndex": 0,
+                    "singleItem": false,
+                    "status": "live",
+                    "stockItems": [],
+                    "trackingRequired": false
+                }
+            ],
+            "slaTimestamp": "2016-09-07T20:42:14.665Z",
+            "sourceOrderId": "RO7C7T",
+            "status": "dataready",
+            "stockItems": [],
+            "tags": []
+        },
+        "source": {
+            "id": "57ad022fc3af860f00c7ed4e",
+            "name": "hp.jpeng"
+        }
+    },
+    "success": true
+}
