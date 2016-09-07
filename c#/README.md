@@ -6,7 +6,8 @@ Code was written in Visual Studios 2015
 
 NuGet package used
 
-Newtonsoft.json
+*Newtonsoft.json
+
 Package restore should take care of this, but if something occurs and the package doesn't get restored. The version that was used is 9.0.1
 
 ##How To Run / Program Information
