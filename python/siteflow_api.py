@@ -6,7 +6,7 @@ import requests, json, hmac, hashlib, datetime, base64, string, random
 
 #access credentials
 #baseUrl = "https://printos.api.hp.com/siteflow"		#use for production server account
-baseUrl = "https://stage.printos.api.hp.com/siteflow"	#use for staging server account
+#baseUrl = "https://stage.printos.api.hp.com/siteflow"	#use for staging server account
 key = ''
 secret = ''
 destination = 'hp.jpeng'

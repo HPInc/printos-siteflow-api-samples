@@ -13,7 +13,7 @@ namespace SiteFlow
     {
         //Access Credentials
         //private static string baseUrl = "https://printos.api.hp.com/siteflow";		//use for production server account
-        private static string baseUrl = "https://stage.printos.api.hp.com/siteflow";    //use for staging server account
+        //private static string baseUrl = "https://stage.printos.api.hp.com/siteflow";    //use for staging server account
         private static string key = "";
         private static string secret = "";
 
