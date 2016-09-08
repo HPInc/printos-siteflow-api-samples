@@ -60,11 +60,20 @@ namespace SiteFlow
             string componentCode = "Content";
             string destination = "hp.jpeng";
             string fetchPath = "https://Server/Path/business_cards.pdf";
-            string itemId = "ORDERID";
-            string orderId = "ORDERID";
+            string itemId = "";
+            string orderId = "";
             string postbackAddress = "http://postback.genesis.com";
             string sku = "Business Cards";
             int quantity = 1;
+
+            //Randomly generate itemId and orderId
+            char[] values = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".ToCharArray();
+            Random random = new Random();
+            for(int i = 0; i < 10; i++)
+            {
+                orderId += values[random.Next(values.Length)];
+                itemId += values[random.Next(values.Length)];
+            }
 
             //Shipping Information
             ShipTo shipTo = new ShipTo();
