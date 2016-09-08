@@ -110,3 +110,8 @@ local.properties
 
 # Code Recommenders
 .recommenders/
+
+
+#JavaScript gitignore
+
+node_modules
