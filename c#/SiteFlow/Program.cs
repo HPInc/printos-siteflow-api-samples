@@ -38,6 +38,12 @@ namespace SiteFlow
         //Helper methods below
         /*------------------------------------------------------------------------------------*/
 
+        /// <summary>
+        /// Creates and adds the Hmac headers to a client
+        /// </summary>
+        /// <param name="method">Type of Http method (GET, POST, PUT)</param>
+        /// <param name="path">Endpoint which the method will hit</param>
+        /// <param name="client">HttpClient to have the headers added to</param>
         private static void CreateHmacHeaders(string method, string path, HttpClient client)
         {
             string timeStamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
@@ -53,6 +59,11 @@ namespace SiteFlow
             client.DefaultRequestHeaders.Add("x-hp-hmac-algorithm", "SHA1");
         }
 
+        /// <summary>
+        /// Creates an order to validate / submit to SiteFlow
+        /// See https://developers.hp.com/printos/doc/order-json-structure for information about the Order structure
+        /// </summary>
+        /// <returns></returns>
         private static Order CreateOrder()
         {
             //Variables required for a single item order
@@ -129,6 +140,12 @@ namespace SiteFlow
         //Methods for APIs Below
         /*------------------------------------------------------------------------------------*/
 
+        /// <summary>
+        /// Cancel an order in Site Flow
+        /// </summary>
+        /// <param name="sourceAccount">name of the source account</param>
+        /// <param name="orderId">source order id of the order (user generated)</param>
+        /// <returns></returns>
         private static async Task CancelOrder(string sourceAccount, string orderId)
         {
             Console.WriteLine("Canceling Order from account " + sourceAccount + " with ID: " + orderId);
@@ -155,6 +172,10 @@ namespace SiteFlow
             }
         }
 
+        /// <summary>
+        /// Gets a list of all orders in Site Flow
+        /// </summary>
+        /// <returns></returns>
         private static async Task GetAllOrders()
         {
             Console.WriteLine("Getting All Orders");
@@ -180,6 +201,11 @@ namespace SiteFlow
             }
         }
 
+        /// <summary>
+        /// Gets information of a specific order in Site Flow
+        /// </summary>
+        /// <param name="orderId">id of the order (SiteFlow generated)</param>
+        /// <returns></returns>
         private static async Task GetSingleOrder(string orderId)
         {
             Console.WriteLine("Getting Order with ID: " + orderId);
@@ -205,6 +231,10 @@ namespace SiteFlow
             }
         }
 
+        /// <summary>
+        /// Submits an order into Site Flow
+        /// </summary>
+        /// <returns></returns>
         private static async Task SubmitOrder()
         {
             Console.WriteLine("Submitting Order.");
@@ -234,6 +264,10 @@ namespace SiteFlow
             }
         }
 
+        /// <summary>
+        /// Validates an order to see if its able to be submitted successfully
+        /// </summary>
+        /// <returns></returns>
         private static async Task ValidateOrder()
         {
             Console.WriteLine("Validating Order.");
