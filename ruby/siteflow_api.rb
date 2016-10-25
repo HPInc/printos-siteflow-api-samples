@@ -1,3 +1,5 @@
+# © Copyright 2016 HP Development Company, L.P.
+# SPDX-License-Identifier: MIT
 
 require 'json'
 require 'net/http'

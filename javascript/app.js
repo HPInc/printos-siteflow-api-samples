@@ -1,3 +1,6 @@
+// © Copyright 2016 HP Development Company, L.P.
+// SPDX-License-Identifier: MIT
+
 var SiteFlowApi = require('./siteFlowApi');
 
 var key = '';

@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿// © Copyright 2016 HP Development Company, L.P.
+// SPDX-License-Identifier: MIT
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
