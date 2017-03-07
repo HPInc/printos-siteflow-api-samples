@@ -14,7 +14,7 @@ The JAR files to the libraries are not included. You will need to download and c
 
 The SiteFlow_Example.java class is the one that you will run.
 
-Before you can run the code, you need to provide the Key/Secret (Line 14/15). The SiteFlow.java class has two baseUrls. Uncomment the one that your Key/Secret was created/provided in.
+Before you can run the code, you need to provide the Key/Secret. The SiteFlow.java class has two baseUrls. Uncomment the one that your Key/Secret was created/provided in.
 
 The initial methods will validate the premade order. The premade order structure follows the structure documented [here] (https://developers.hp.com/printos/doc/order-json-structure) 
 

@@ -15,7 +15,7 @@ Install modules using:
 
 Run on the command line using ```node app.js```
 
-Before you can run the code, you need to provide the Key/Secret (Line 3/4) in app.js. There are two baseUrls provided. Uncomment the one that your Key/Secret was created/provided in.
+Before you can run the code, you need to provide the Key/Secret in app.js. There are two baseUrls provided. Uncomment the one that your Key/Secret was created/provided in.
 
 The initial functions will validate the premade order. The premade order structure follows the structure documented [here] (https://developers.hp.com/printos/doc/order-json-structure) 
 
