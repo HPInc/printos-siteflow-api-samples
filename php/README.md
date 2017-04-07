@@ -1,10 +1,10 @@
-#JavaScript
+# PHP
 
-##General Information
+## General Information
 
 Code was written in PHP 5.6.24
 
-##How To Run / Program Information
+## How To Run / Program Information
 
 Installing XAMPP and adding the box_api.php file to the htdocs folder is a quick way to run the code.
 
