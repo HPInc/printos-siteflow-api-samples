@@ -22,6 +22,8 @@ namespace SiteFlow
 
         static void Main(string[] args)
         {
+	    ///Forcing TLS to 1.2 prevents an issue with older .NET frameworks defaulting to 1.0 which is not supported.
+	    System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;	
             RunAsync().Wait();
 
             Console.WriteLine("All Tasks Complete. Press any key to stop...");
