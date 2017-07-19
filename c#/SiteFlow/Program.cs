@@ -22,6 +22,8 @@ namespace SiteFlow
 
         static void Main(string[] args)
         {
+            //Forcing TLS to 1.2 prevents an issue with older .NET frameworks defaulting to 1.0 which is not supported.
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
             RunAsync().Wait();
 
             Console.WriteLine("All Tasks Complete. Press any key to stop...");
@@ -32,6 +34,9 @@ namespace SiteFlow
         {
             await ValidateOrder(); WaitBeforeProceeding();
             //await SubmitOrder(); WaitBeforeProceeding();
+            //await GetProducts(); WaitBeforeProceeding();
+            //await GetSkus(); WaitBeforeProceeding();
+            //await GetUploadUrls("application/pdf"); WaitBeforeProceeding();
             //await GetAllOrders(); WaitBeforeProceeding();
             //await GetSingleOrder("OrderId"); WaitBeforeProceeding();
             //await CancelOrder("sourceAccount", "sourceOrderId"); WaitBeforeProceeding();
@@ -77,7 +82,7 @@ namespace SiteFlow
             string itemId = "";
             string orderId = "";
             string postbackAddress = "http://postback.genesis.com";
-            string sku = "Business Cards";
+            string sku = "Flat";
             int quantity = 1;
 
             //Randomly generate itemId and orderId
@@ -105,11 +110,20 @@ namespace SiteFlow
             carrier.code = "customer";
             carrier.service = "shipping";
 
+            //Ad hoc routing
+            //Route[] route = new Route[4];
+            //route[0] = new Route("Print", ""); //eventTypeId found within Site Flow -> Events
+            //route[1] = new Route("Cut", "");
+            //route[2] = new Route("Laminate", "");
+            //route[3] = new Route("Finish", "");
+
             //Component Information
-            Component component = new Component();
-            component.code = componentCode;
-            component.path = fetchPath;
-            component.fetch = "true";
+            Component[] component = new Component[1];
+            component[0] = new Component();
+            component[0].code = componentCode;
+            component[0].path = fetchPath;
+            component[0].fetch = "true";
+            //component[0].route = route;
 
             //Create an Item
             Item item = new Item(component);
@@ -205,6 +219,64 @@ namespace SiteFlow
         }
 
         /// <summary>
+        /// Gets a list of produts in Site Flow
+        /// </summary>
+        /// <returns></returns>
+        private static async Task GetProducts()
+        {
+            Console.WriteLine("Getting Products.");
+            using(var client = new HttpClient())
+            {
+                CreateHmacHeaders("GET", "/api/product", client);
+
+                HttpResponseMessage response = await client.GetAsync(baseUrl + "/api/product");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Success. Products were obtained.");
+                    string info = await response.Content.ReadAsStringAsync();
+                    JObject json = JObject.Parse(info);
+                    string infoFormatted = json.ToString();
+                    Console.WriteLine(infoFormatted);
+                }
+                else
+                {
+                    Console.WriteLine("Failure. Unable to obtain products.");
+                    Console.WriteLine(response.ReasonPhrase);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of skus in Site Flow
+        /// </summary>
+        /// <returns></returns>
+        private static async Task GetSkus()
+        {
+            Console.WriteLine("Getting Skus.");
+            using (var client = new HttpClient())
+            {
+                CreateHmacHeaders("GET", "/api/sku", client);
+
+                HttpResponseMessage response = await client.GetAsync(baseUrl + "/api/sku");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Success. Skus were obtained.");
+                    string info = await response.Content.ReadAsStringAsync();
+                    JObject json = JObject.Parse(info);
+                    string infoFormatted = json.ToString();
+                    Console.WriteLine(infoFormatted);
+                }
+                else
+                {
+                    Console.WriteLine("Failure. Unable to obtain skus.");
+                    Console.WriteLine(response.ReasonPhrase);
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets information of a specific order in Site Flow
         /// </summary>
         /// <param name="orderId">id of the order (SiteFlow generated)</param>
@@ -229,6 +301,37 @@ namespace SiteFlow
                 else
                 {
                     Console.WriteLine("Failure. Unable to obtain order " + orderId);
+                    Console.WriteLine(response.ReasonPhrase);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get url to upload local file
+        /// </summary>
+        /// <param name="mimeType">MIME type of the file to upload</param>
+        /// <returns></returns>
+        private static async Task GetUploadUrls(string mimeType)
+        {
+            Console.WriteLine("Getting upload urls");
+            using (var client = new HttpClient())
+            {
+                CreateHmacHeaders("GET", "/api/file/getpreupload", client);
+                string mimeTypeQuery = "?mimeType=" + mimeType;
+
+                HttpResponseMessage response = await client.GetAsync(baseUrl + "/api/file/getpreupload" + mimeTypeQuery);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Success. Upload urls were obtained.");
+                    string info = await response.Content.ReadAsStringAsync();
+                    JObject json = JObject.Parse(info);
+                    string infoFormatted = json.ToString();
+                    Console.WriteLine(infoFormatted);
+                }
+                else
+                {
+                    Console.WriteLine("Failure. Unable to get upload urls");
                     Console.WriteLine(response.ReasonPhrase);
                 }
             }

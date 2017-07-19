@@ -15,16 +15,11 @@ function SiteFlowApiTest() {
 	//var baseUrl = 'https://stage.printos.api.hp.com/siteflow'; //use for account on staging server
 	var siteFlowApi = new SiteFlowApi(baseUrl, key, secret, proxy);
 
-	this.testValidateOrder = function(order) {
-		siteFlowApi.validateOrder(order)
+	this.testCancelOrder = function(account, id) {
+		siteFlowApi.cancelOrder(account, id)
 		.then(success, failure);
 	}
-	
-	this.testSubmitOrder = function(order) {
-		siteFlowApi.submitOrder(order)
-		.then(success, failure);
-	}
-	
+
 	this.testGetOrder = function(id) {
 		siteFlowApi.getOrder(id)
 		.then(success, failure);
@@ -34,18 +29,41 @@ function SiteFlowApiTest() {
 		siteFlowApi.getOrders()
 		.then(success, failure);
 	}
+
+	this.testGetProducts = function() {
+		siteFlowApi.getProducts()
+		.then(success, failure);
+	}
 	
-	this.testCancelOrder = function(account, id) {
-		siteFlowApi.cancelOrder(account, id)
+	this.testGetSkus = function() {
+		siteFlowApi.getSkus()
+		.then(success, failure);
+	}
+
+	this.testGetUploadUrls = function(mime_type) {
+		siteFlowApi.getUploadUrls(mime_type)
+		.then(success, failure);
+	}
+	
+	this.testSubmitOrder = function(order) {
+		siteFlowApi.submitOrder(order)
+		.then(success, failure);
+	}
+
+	this.testValidateOrder = function(order) {
+		siteFlowApi.validateOrder(order)
 		.then(success, failure);
 	}
 	
 	this.testAll = function() {
-		// this.testCancelOrder('sourceAccount', 'sourceOrderId');
 		this.testValidateOrder(this.buildOrder());
 		// this.testSubmitOrder(this.buildOrder());
-		// this.testGetOrder('orderId');
+		// this.testGetProducts();
+		// this.testGetSkus();
+		// this.testGetUploadUrls("application/pdf")
 		// this.testGetOrders();
+		// this.testGetOrder('orderId');
+		// this.testCancelOrder('sourceAccount', 'sourceOrderId');
 	}
 	
 	this.buildOrder = function() {
@@ -53,39 +71,52 @@ function SiteFlowApiTest() {
 		var orderId = getRandomOrderId();
 
 		var order = {
-				destination: {
-					name: "hp.jpeng"
-				},
-				orderData: {
-					sourceOrderId: orderId,
-					postbackAddress: "apjohnsto@gmail.com",
-					items: [{
-						description: "Test Product",
-						sku: "Postcard",
-						sourceItemId: orderId + "-I-01",
-						components: [{
-							path: "http://www.primaryresources.co.uk/english/pdfs/postcard_template.pdf",
-							code: "Content",
-							fetch: true
-						}]
-					}],
-					shipments: [{
-						shipTo: {
-							name: "Peter Pan",
-							address1: "17 Disney Way",
-							town: "Los Angeles",
-							postcode: "34757",
-							state: "California",
-							isoCountry: "US",
-							email: "Peter@Pan.com",
-							phone: "0123456789"
-						},
-						carrier: {
-							code: "customer",
-							service: "shipping"
-						}
+			destination: {
+				name: "hp.jpeng"
+			},
+			orderData: {
+				sourceOrderId: orderId,
+				postbackAddress: "apjohnsto@gmail.com",
+				items: [{
+					description: "Test Product",
+					sku: "Flat",
+					sourceItemId: orderId + "-I-01",
+					components: [{
+						path: "https://Server/Path/business_cards.pdf",
+						code: "Content",
+						fetch: true,
+						// route: [{
+						// 	"name": "Print",
+						// 	"eventTypeId": ""		//eventTypeId found within Site Flow -> Events
+						// }, {
+						// 	"name": "Cut",
+						// 	"eventTypeId": ""
+						// }, {
+						// 	"name": "Laminate",
+						// 	"eventTypeId": ""
+						// }, {
+						// 	"name": "Finish",
+						// 	"eventTypeId": ""
+						// }]
 					}]
-				}
+				}],
+				shipments: [{
+					shipTo: {
+						name: "Peter Pan",
+						address1: "17 Disney Way",
+						town: "Los Angeles",
+						postcode: "34757",
+						state: "California",
+						isoCountry: "US",
+						email: "Peter@Pan.com",
+						phone: "0123456789"
+					},
+					carrier: {
+						code: "customer",
+						service: "shipping"
+					}
+				}]
+			}
 		}
 		return order;
 	}

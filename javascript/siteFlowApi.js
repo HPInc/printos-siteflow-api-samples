@@ -8,16 +8,6 @@ function SiteFlowApi(baseUrl, key, secret, proxy) {
 
 	var printOSClient = new PrintOSClient(baseUrl, key, secret, proxy);
 
-	this.validateOrder = function(order) {
-		console.log("Validating order", (order.orderData.sourceOrderId));
-		return printOSClient.post('/api/order/validate', order);
-	}
-	
-	this.submitOrder = function(order) {
-		console.log("Creating order", (order.orderData.sourceOrderId));
-		return printOSClient.post('/api/order', order);
-	}
-	
 	this.cancelOrder = function(account, id) {
 		console.log("Cancelling account:order " + account + ':' + id);
 		return printOSClient.put('/api/order/' + account + '/' + id + '/cancel');
@@ -31,6 +21,31 @@ function SiteFlowApi(baseUrl, key, secret, proxy) {
 	this.getOrders = function() {
 		console.log("Getting all orders");
 		return printOSClient.get('/api/order');
+	}
+
+	this.getProducts = function() {
+		console.log("Getting products");
+		return printOSClient.get('/api/product');
+	}
+
+	this.getSkus = function() {
+		console.log("Getting skus");
+		return printOSClient.get('/api/sku');
+	}
+
+	this.getUploadUrls = function(mimeType) {
+		console.log("Getting upload urls");
+		return printOSClient.get('/api/file/getpreupload', query_params = {'mimeType':mimeType});
+	}
+
+	this.submitOrder = function(order) {
+		console.log("Creating order", (order.orderData.sourceOrderId));
+		return printOSClient.post('/api/order', order);
+	}
+
+	this.validateOrder = function(order) {
+		console.log("Validating order", (order.orderData.sourceOrderId));
+		return printOSClient.post('/api/order/validate', order);
 	}
 }
 

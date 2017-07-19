@@ -13,6 +13,9 @@ $secret = '';
 
 validateOrder();
 #submitOrder();
+#getProducts();
+#getSkus();
+#getUploadUrls("application/pdf");
 #getAllOrders();
 #getOrder('OrderId');
 #cancelOrder('sourceAccount', 'sourceOrderId');
@@ -50,6 +53,36 @@ function getAllOrders() {
 function getOrder($orderId) {
 	echo "Getting Order: " . $orderId . "</br>";
 	$response = getRequest('/api/order/' . $orderId);
+	printInfo($response);
+}
+
+/**
+ * Gets a list of products in Site Flow
+ */
+function getProducts() {
+	echo "Getting Products </br>";
+	$response = getRequest('/api/product');
+	printInfo($response);
+}
+
+/**
+ * Gets a list of skus in Site Flow
+ */
+function getSkus() {
+	echo "Getting Skus </br>";
+	$response = getRequest('/api/sku');
+	printInfo($response);
+}
+
+/**
+ * Gets the amazon aws upload urls for a file.
+ *
+ * @param $mimeType - MIME type of the file to upload
+ */
+function getUploadUrls($mimeType) {
+	echo "Getting upload urls. </br>";
+	$mimeParam = "?mimeType=" . $mimeType;
+	$response = getRequestWithParam('/api/file/getpreupload', $mimeParam);
 	printInfo($response);
 }
 
@@ -98,9 +131,9 @@ function createHmacAuth($method, $path, $timestamp) {
  * "1238576" will need to be a unique user generated id or validation/submission will fail. This is also the id used to cancel an order.
  */
 function createOrder() {
-	$postData = "{\"orderData\": {\"shipments\": [{\"shipTo\": {\"town\": \"New York\", \"isoCountry\": \"US\", \"state\": \"New York\", \"name\": \"John Doe\", \"phone\": \"01234567890\", \"address1\": \"5th Avenue\", \"email\": \"johnd@acme.com\", \"postcode\": \"12345\"}, \"carrier\": {\"code\": \"customer\", \"service\": \"pickup\"}}], \"items\": [{\"sku\": \"Business Cards\", \"sourceItemId\": \"1\", \"components\": [{\"path\": \"https://Server/Path/business_cards.pdf\", \"code\": \"Content\", \"fetch\": \"true\"}], \"quantity\": 1}], \"postbackAddress\": \"http://postback.genesis.com\", \"sourceOrderId\": \"124568746\"}, \"destination\": {\"name\": \"hp.jpeng\"}}";
+	$postData = new Order;
 
-	return $postData;
+	return $postData->getOrderJson();
 }
 
 /**
@@ -150,6 +183,34 @@ function getRequest($path) {
 
 	$context = stream_context_create($options);
 	return file_get_contents($baseUrl . $path, false, $context);
+}
+
+/**
+ * HTTP GET request with a mimeType parameter
+ *
+ * @global $baseUrl - base url/path for the apis
+ * @param $path - api path
+ * @param $mimeParam - MIME type to be added to end of $path
+ *
+ * Note: $baseUrl . $path . $mimeParam will be the full url to get the upload urls specific to the MIME type.
+ */
+function getRequestWithParam($path, $mimeParam) {
+	global $baseUrl;
+	
+	$t = microtime(true);
+	$micro = sprintf("%03d",($t - floor($t)) * 1000);
+	$time = gmdate('Y-m-d\TH:i:s.', $t).$micro.'Z';
+	$auth = createHmacAuth('GET', $path, $time);
+	$options = array(
+		'http' => array(
+			'header'=>  "Content-Type: application/json\r\n" .
+						"x-hp-hmac-date: " . $time . "\r\n" .
+						"x-hp-hmac-authentication: " . $auth . "\r\n",
+			'method'  => 'GET',
+		),
+	); 
+	$context = stream_context_create($options);
+	return file_get_contents($baseUrl . $path . $mimeParam, false, $context);
 }
 
 /**
@@ -209,6 +270,99 @@ function putRequest($path) {
 
 	$context = stream_context_create($options);
 	return file_get_contents($baseUrl . $path, false, $context);
+}
+
+
+#Order related Classes
+#--------------------------------------------------------------#
+
+class Order {
+    public $destination = array('name' => 'hp.jpeng');
+    public $orderData;
+    
+    function __construct() {
+        $this->orderData = new OrderData();
+    }
+    
+    function getOrderJson() {
+        return json_encode($this);
+    }
+}
+
+class OrderData {
+    public $sourceOrderId;
+    public $postbackAddress;
+    public $items = array();
+    public $shipments = array();
+    
+    function __construct() {
+        $this->sourceOrderId = uniqid();
+        $this->postbackAddress = "http://postback.genesis.com";
+        array_push($this->items, new Items);
+        array_push($this->shipments, new Shipments);
+    }
+}
+
+class Items {
+    public $sourceItemId;
+    public $sku;
+    public $quantity;
+    public $components = array();
+   
+    function __construct() {
+        $this->sourceItemId = uniqid();
+        $this->sku = "Flat";
+        $this->quantity = 10;
+        array_push($this->components, new Components);
+    }
+}
+
+class Components {
+    public $code = "Content";
+    public $path;
+    public $fetch;
+    #public $route = array(); #Ad Hoc routing
+    
+    function __construct() {
+        $this->code = "Content";
+        $this->path = "https://Server/Path/business_cards.pdf";
+        $this->fetch = true;
+        #array_push($this->route, new Route("Print", ""));
+        #array_push($this->route, new Route("Cut", ""));
+        #array_push($this->route, new Route("Laminate", ""));
+        #array_push($this->route, new Route("Finish", ""));
+    }
+}
+
+class Route {
+    public $name;
+    public $eventTypeId; #eventTypeId found within Site Flow -> Events
+    
+    function __construct($name, $eventTypeId) {
+        $this->name = $name;
+        $this->eventTypeId = $eventTypeId;
+    }
+}
+
+class Shipments {
+    public $shipTo;
+    public $carrier;
+    
+    function __construct() {
+        $this->shipTo = new ShipTo;
+        $this->carrier = array('code' => 'customer', 'service' => 'shipping');
+    }
+}
+
+class ShipTo {
+    public $name = "John Doe";
+    public $address1 = "5th Avenue";
+    public $town = "New York";
+    public $postcode = "12345";
+    public $state = "New York";
+    public $isoCountry = "US";
+    public $email = "johnd@acme.com";
+    public $phone = "01234567890";
 }
 
 ?>

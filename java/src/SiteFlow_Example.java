@@ -24,6 +24,9 @@ public class SiteFlow_Example {
 
 		printInfo( siteFlow.ValidateOrder(createOrder()), true );
 //		printInfo( siteFlow.SubmitOrder(createOrder()), true );
+//		printInfo( siteFlow.GetProducts(), true );
+//		printInfo( siteFlow.GetSkus(), true );
+//		printInfo( siteFlow.GetUploadUrls("application/pdf"), true );
 //		printInfo( siteFlow.GetAllOrders(), true );
 //		printInfo( siteFlow.GetOrder("OrderId"), true );
 //		printInfo( siteFlow.CancelOrder("sourceAccount", "sourceOrderId"), true );
@@ -42,7 +45,7 @@ public class SiteFlow_Example {
 		String orderId = "";
 		String postbackAddress = "http://postback.genesis.com";
 		int quantity = 1;
-		String sku = "Business Cards";
+		String sku = "Flat";
 		
 		//Generate random OrderId and itemId
 		Random rand = new Random();
@@ -74,11 +77,28 @@ public class SiteFlow_Example {
 		item.put("sku", sku);
 		item.put("quantity", quantity);
 		
+		//Create components
 		JSONObject components = new JSONObject();
 		components.put("code", componentCode);
 		components.put("path", fetchPath);
 		components.put("fetch", "true");
+
+		//Ad Hoc Routing
+		JSONObject route1 = new JSONObject();
+		route1.put("name", "Print");
+		route1.put("eventTypeId", "");		//eventTypeId found within Site Flow -> Events
+
+		JSONObject route2 = new JSONObject();
+		route2.put("name", "Cut");
+		route2.put("eventTypeId", "");
+
+		JSONObject route3 = new JSONObject();
+		route3.put("name", "Laminate");
+		route3.put("eventTypeId", "");
 		
+		// components.append("route", route1);
+		// components.append("route", route2);
+		// components.append("route", route3);
 		item.append("components", components);		
 		
 		//Create a shipment

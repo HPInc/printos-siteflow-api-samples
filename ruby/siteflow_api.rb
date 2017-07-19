@@ -43,6 +43,30 @@ def get_order(order_id)
 	puts response.body
 end
 
+# Gets a list of products in Site Flow.
+def get_products()
+	puts "Getting products"
+	response = request_get("/api/product")
+	puts response.body
+end
+
+# Gets a list of skus in Site Flow.
+def get_skus()
+	puts "Getting skus"
+	response = request_get("/api/sku")
+	puts response.body
+end
+
+# Gets the amazon aws upload urls for a file.
+#
+# Param: 
+#   mime_type - MIME type of the file to upload
+def get_upload_urls(mime_type)
+	puts "Getting upload urls"
+	response = request_get_with_param('/api/file/getpreupload', mime_type)
+	puts response.body
+end
+
 # Submits an order into SiteFlow
 def submit_order()
 	puts "Submitting order"
@@ -79,10 +103,54 @@ end
 # Creates a mock order to test validate and submission of an order
 #
 # Note: "hp.jpeng" will need to be changed to your own printos account username
-# "741852963" will need to be a unique user generated id or validation/submission will fail. This is also the id used to cancel an order
 def create_order()
-	order_data = "{\"orderData\": {\"shipments\": [{\"shipTo\": {\"town\": \"New York\", \"isoCountry\": \"US\", \"state\": \"New York\", \"name\": \"John Doe\", \"phone\": \"01234567890\", \"address1\": \"5th Avenue\", \"email\": \"johnd@acme.com\", \"postcode\": \"12345\"}, \"carrier\": {\"code\": \"customer\", \"service\": \"pickup\"}}], \"items\": [{\"sku\": \"Business Cards\", \"sourceItemId\": \"1\", \"components\": [{\"path\": \"https://Server/Path/business_cards.pdf\", \"code\": \"Content\", \"fetch\": \"true\"}], \"quantity\": 1}], \"postbackAddress\": \"http://postback.genesis.com\", \"sourceOrderId\": \"741858555552963\"}, \"destination\": {\"name\": \"hp.jpeng\"}}"
-	return order_data
+	{
+		"destination" => {
+			"name" => "hp.jpeng"
+		},
+		"orderData" => {
+			"sourceOrderId" => [*('A'..'Z')].sample(8).join,
+			"items" => [{
+				"sourceItemId" => [*('A'..'Z')].sample(8).join,
+				"sku" => "Flat",
+				"quantity" => 1,
+				"components" => [{
+					"code" => "Content",
+					"path" => "https://Server/Path/business_cards.pdf",
+					"fetch" => "true",
+					# "route" => [{
+					# 		"name" => "Print",
+					# 		"eventTypeId" => ""		#eventTypeId found within Site Flow -> Events
+					# 	}, {
+					# 		"name" => "Cut",
+					# 		"eventTypeId" => ""
+					# 	}, {
+					# 		"name" => "Laminate",
+					# 		"eventTypeId" => ""
+					# 	}, {
+					# 		"name" => "Finish",
+					# 		"eventTypeId" => ""
+					# }]
+				}],
+			}],
+			"shipments" => [{
+				"shipTo" => {
+					"name" => "John Doe",
+					"address1" => "5th Avenue",
+					"town" => "New York",
+					"postcode" => "12345",
+					"state" => "New York",
+					"isoCountry" => "US",
+					"email" => "johnd@acme.com",
+					"phone" => "01234567890"
+				},
+				"carrier" => {
+					"code" => "customer",
+					"service" => "shipping"
+				}
+			}]
+		}
+	}.to_json()
 end
 
 
@@ -112,6 +180,30 @@ def request_get(path)
 	end
 
 	return response
+end
+
+# HTTP GET request with a mime_type parameter
+#
+# Param: 
+#   path - api path
+#   param - MIME type to be added to the end of path
+#
+# Note: +baseUrl + path + param will be the full url to get the upload urls specific to the MIME type.
+def request_get_with_param(path, param)
+	timestamp = Time.now.utc.iso8601
+	auth = create_hmac_auth("GET", path, timestamp)
+	
+	uri = URI($baseUrl + path + "?mimeType=" + param)
+
+	request = Net::HTTP::Get.new(uri)
+	request.add_field("x-hp-hmac-authentication", auth)
+	request.add_field("x-hp-hmac-date", timestamp)
+
+	response = Net::HTTP.start(uri.host, uri.port,
+		:use_ssl => uri.scheme == 'https',
+		:verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
+		http.request(request)
+	end
 end
 
 # HTTP POST request
@@ -171,8 +263,11 @@ end
 #Function Calls 
 #--------------------------------------------------------------#
 
-validate_order()
+#validate_order()
 #submit_order()
+#get_products()
+#get_skus()
+#get_upload_urls("application/pdf")
 #get_all_orders()
 #get_order("OrderId")
 #cancel_order("sourceAccount", "sourceOrderId")

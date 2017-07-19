@@ -85,6 +85,65 @@ public class SiteFlow {
 		System.out.println("Getting order with ID: " + orderId);
 		return client.execute(request);
 	}
+	
+	/**
+	 * Gets a list of products in Site Flow.
+	 * 
+	 * @return
+	 * @throws InvalidKeyException
+	 * @throws NoSuchAlgorithmException
+	 * @throws IOException
+	 */
+	public HttpResponse GetProducts() throws InvalidKeyException, NoSuchAlgorithmException, IOException {
+		String path = "/api/product";
+		CloseableHttpClient client = HttpClients.createDefault();
+		HttpGet request = new HttpGet(baseUrl + path);
+		
+		addHeaders(request, "GET", path);
+		
+		System.out.println("Getting Products");
+		return client.execute(request);
+	}
+	
+	/**
+	 * Gets a list of skus in Site Flow.
+	 * 
+	 * @return
+	 * @throws InvalidKeyException
+	 * @throws NoSuchAlgorithmException
+	 * @throws IOException
+	 */
+	public HttpResponse GetSkus() throws InvalidKeyException, NoSuchAlgorithmException, IOException {
+		String path = "/api/sku";
+		CloseableHttpClient client = HttpClients.createDefault();
+		HttpGet request = new HttpGet(baseUrl + path);
+		
+		addHeaders(request, "GET", path);
+		
+		System.out.println("Getting Skus");
+		return client.execute(request);
+	}
+
+	/**
+	 * Gets the upload urls for a file
+	 * 
+	 * @param mimeType - MIME type of file to upload
+	 * @return HttpResponse of the GET request
+	 * @throws InvalidKeyException
+	 * @throws NoSuchAlgorithmException
+	 * @throws IOException
+	 */
+	public HttpResponse GetUploadUrls(String mimeType) throws InvalidKeyException, NoSuchAlgorithmException, IOException {
+		String path = "/api/file/getpreupload";
+		CloseableHttpClient client = HttpClients.createDefault();
+		String mimeParam = "?mimeType=" + mimeType;
+		HttpGet request = new HttpGet(baseUrl + path + mimeParam);
+		
+		addHeaders(request, "GET", path);
+		
+		System.out.println("Getting upload urls");
+		return client.execute(request);
+	}
 
 	/**
 	 * Submits an order into Site Flow

@@ -10,6 +10,7 @@ import requests, json, hmac, hashlib, datetime, base64, string, random
 #access credentials
 #baseUrl = "https://printos.api.hp.com/siteflow"		#use for production server account
 #baseUrl = "https://stage.printos.api.hp.com/siteflow"	#use for staging server account
+
 key = ''
 secret = ''
 destination = 'hp.jpeng'
@@ -49,9 +50,9 @@ def create_headers(method, path, timestamp):
 	local_secret = secret.encode('utf-8')
 	string_to_sign = string_to_sign.encode('utf-8')
 	signature = hmac.new(local_secret, string_to_sign, hashlib.sha1).hexdigest()
-	genesis_auth = key + ':' + signature
+	auth = key + ':' + signature
 	return {'content-type': 'application/json',
-		'x-hp-hmac-authentication': genesis_auth,
+		'x-hp-hmac-authentication': auth,
 		'x-hp-hmac-date': timestamp,
 		'x-hp-hmac-algorithm' : 'SHA1'
 	}
@@ -74,6 +75,35 @@ Params:
 def get_order(order_id):
 	print("Retrieving Order")
 	return request_get('/api/order/' + order_id)
+
+
+'''
+Retrieves the list of products
+'''
+def get_products():
+	print("Getting list of products")
+	return request_get('/api/product')
+
+
+'''
+Retrieves the list of skus
+'''
+def get_skus():
+	print("Getting list of skus")
+	return request_get('/api/sku')
+
+
+'''
+Get url to upload local file
+'''
+def get_upload_url(mimeType):
+	print("Getting pre-upload url")
+	timestamp = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+	path = ('/api/file/getpreupload')
+	url = baseUrl + path
+	headers = create_headers("GET", path, timestamp)
+	result = requests.get(url, headers=headers, params={'mimeType':mimeType})
+	return result
 
 
 '''
@@ -160,7 +190,7 @@ itemId = id_generator()
 orderId = id_generator()
 postbackAddress = "http://postback.genesis.com"
 quantity = 1
-sku = "Business Cards"
+sku = "Flat"
 
 
 '''
@@ -186,15 +216,31 @@ carrier = {
 	"service":    "shipping"
 }
 
+#Ad Hoc routing
+route = [{
+	"name": "Print",
+	"eventTypeId": ""		#eventTypeId found within Site Flow -> Events
+}, {
+	"name": "Cut",
+	"eventTypeId": ""
+}, {
+	"name": "Laminate",
+	"eventTypeId": ""
+}, {
+	"name": "Finish",
+	"eventTypeId": ""
+}]
+
 #Create an Item
 item = {
 	"sourceItemId":         itemId,
 	"sku":                  sku,
 	"quantity":             quantity,
 	"components": [{
-		"code":             componentCode,
-		"path":             fetchPath,
-		"fetch":			"true"
+		"code": componentCode,
+		"path": fetchPath,
+		"fetch": "true",
+		# "route": route
 	}]
 }
 
@@ -217,11 +263,14 @@ order = {
 	}
 }
 
+
 #--------------------------------------------------------------#
 
-
-print_json(validate_order(json.dumps(order)))							
-#print_json(submit_order(json.dumps(order)))							
-#print_json(get_all_orders())											
-#print_json(get_order("OrderId"))						
-#print_json(cancel_order("hp.jpeng", "sourceOrderId"))							
+print_json(validate_order(json.dumps(order)))
+#print_json(submit_order(json.dumps(order)))
+#print_json(get_products())
+#print_json(get_skus())
+#print_json(get_upload_url("application/pdf"))
+#print_json(get_all_orders())
+#print_json(get_order("OrderId"))
+#print_json(cancel_order("hp.jpeng", "sourceOrderId"))

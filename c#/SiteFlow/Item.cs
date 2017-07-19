@@ -1,12 +1,6 @@
 ﻿// © Copyright 2016 HP Development Company, L.P.
 // SPDX-License-Identifier: MIT
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace SiteFlow
 {
     class Item
@@ -16,10 +10,9 @@ namespace SiteFlow
         public int quantity { get; set; }
         public Component[] components { get; set; }
 
-        public Item(Component component)
+        public Item(Component[] components)
         {
-            components = new Component[1];
-            components[0] = component;
+            this.components = components;
         }
     }
 }

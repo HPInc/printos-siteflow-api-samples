@@ -33,6 +33,7 @@ bld/
 [Oo]bj/
 [Ll]og/
 
+*.iml
 *_i.c
 *_p.c
 *_i.h
@@ -74,6 +75,9 @@ local.properties
 
 # Eclipse Core
 .project
+
+# IntelliJ
+.idea
 
 # External tool builders
 .externalToolBuilders/
