@@ -1,0 +1,82 @@
+{
+  "id": "df461fe7-efc1-60bc-b57d-f2f2f0fad30e",
+  "name": "Postman Globals",
+  "values": [
+    {
+      "key": "hmacHeader",
+      "type": "text",
+      "value": "3mq6d4gd1g7s0rm2igvhru1rfdsm1knd:f4521707e40acd51d5cd383e720c44bd38f33288",
+      "enabled": true
+    },
+    {
+      "key": "timestamp",
+      "type": "text",
+      "value": "2017-04-14T22:01:52.343Z",
+      "enabled": true
+    },
+    {
+      "key": "orderEndpoint",
+      "value": "/api/order",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "validateEndpoint",
+      "value": "/api/order/validate",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "folderEndpoint",
+      "value": "/api/partner/folder",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "fileEndpoint",
+      "value": "/api/partner/file",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "substrateEndpoint",
+      "value": "/api/partner/substrate",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "productEndpoint",
+      "value": "/api/product",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "skuEndpoint",
+      "value": "/api/sku",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "filePreupload",
+      "value": "/api/file/getpreupload",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "flowEndpoint",
+      "value": "/api/partner/flow",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "uploadURLsEndpoint",
+      "value": "/api/partner/file/uploadurls",
+      "description": "",
+      "type": "text",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "globals",
+  "_postman_exported_at": "2017-08-01T16:12:59.565Z",
+  "_postman_exported_using": "Postman/5.1.2"
+}
