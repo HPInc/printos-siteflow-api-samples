@@ -1,0 +1,22 @@
+{
+  "name": "oneflow/php-sdk",
+  "description": "PHP SDK for OneFlow",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "homepage": "http://www.oneflowsystems.com/",
+  "authors": [
+    {
+      "name": "Nigel Watson",
+      "email": "nigel.watson@oneflowsystems.com"
+    }
+  ],
+  "autoload": {
+    "files": ["src/OneflowSDK.php", "src/ProductionSDK.php"]
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.5"
+  },
+  "scripts": {
+    "test": "./vendor/bin/phpunit --bootstrap ./vendor/autoload.php --testdox --coverage-clover=coverage.xml --coverage-html coverage --whitelist src tests"
+  }
+}

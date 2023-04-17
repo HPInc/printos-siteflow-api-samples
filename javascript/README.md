@@ -1,24 +1,40 @@
-# JavaScript
+# oneflow-sdk-js
 
-## General Information
+## Installation 
 
-The modules that the code requires can be installed using npm. You can download Nodejs which comes with npm together with it.
+```bash
+    npm install oneflow-sdk-js
+```
 
-Modules required:
-* superagent
-* superagent-proxy
+## Basic usage
 
-Install modules using:
-> npm install
+```javascript
+    const OneflowClient = require('oneflow-sdk-js');
 
-## How To Run / Program Information
+    const client = new OneflowClient(
+    	process.env.OFS_URL || 'https://pro-api.oneflowcloud.com/api',
+    	process.env.OFS_TOKEN,
+    	process.env.OFS_SECRET
+    );
 
-Run on the command line using ```node app.js```
+    // ...
 
-Before you can run the code, you need to provide the Key/Secret in app.js. There are two baseUrls provided. Uncomment the one that your Key/Secret was created/provided in.
+    const destinationName  = 'oneflow';
+    const orderData  = { sourceOrderId: 'aUniqueId' };
+    const order = client.createOrder(destinationName, orderData);
 
-The initial functions will validate the premade order. The premade order structure follows the structure documented [here](https://developers.hp.com/printos/doc/order-json-structure) 
+    // ... instructions to complete the order data ...
 
-Submitting an order will return information relating to it. See [../sample_output/submit_order_output.txt](https://github.com/HPInc/printos-siteflow-api-samples/blob/master/sample_output/submit_order_output.txt) to see the return information for a successful submission. Line 7 of the file is the id you pass into get_order(). To cancel one of the orders, you need the source account name (Line 241) and source order id (Line 234). The source order id is user generated.
+    const result = await client.submitOrder();
+```
 
-Note: The sample output is in python so the initial print statements will be different, but the structure of the JSON should be the same.
+If a unique routing rule path needs to be specified, it can be done using:
+
+```javascript
+const result = await client.submitOrder({ routingRule: 'your routing rule key here' });
+```
+The routing rule key is a unique string of numbers and letters
+
+For more detailed examples checkout the [examples](examples) folder.
+
+You can find more information about the required fields and the order structure in [https://hpsiteflow.com](http://hpsiteflow.com)

@@ -1,0 +1,8 @@
+*
+!lib/*
+!lib/**
+!examples/*
+!examples/**
+!package.json
+!package-lock.json
+!README.md

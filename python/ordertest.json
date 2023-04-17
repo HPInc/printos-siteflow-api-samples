@@ -1,0 +1,41 @@
+{
+  "destination": {
+    "name": "oneflow"
+  },
+  "orderData": {
+    "sourceOrderId": "42",
+    "items": [
+      {
+        "shipmentindex": "42",
+        "sourceItemId": "123",
+        "sku": "card",
+        "quantity": 1,
+        "components": [
+          {
+            "code": "card",
+            "path": "https://files-static.hpsiteflow.com/samples/CardSample.pdf",
+            "fetch": true
+          }
+        ]
+      }
+    ],
+    "shipments": [
+      {
+        "shipTo": {
+          "name": "Nigel Watson",
+          "companyName": "OneFlow Systems",
+          "address1": "1 Primrose Street",
+          "town": "London",
+          "postcode": "EC2A 4EX",
+          "isoCountry": "GB",
+          "email": "info@oneflowsystems.com",
+          "phone": "02037074173"
+        },
+        "carrier": {
+          "code": "royalmail",
+          "service": "firstclass"
+        }
+      }
+    ]
+  }
+}

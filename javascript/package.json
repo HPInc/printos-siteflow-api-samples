@@ -1,15 +1,24 @@
 {
-  "name": "printos_siteflow",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "dependencies": {
-    "superagent-proxy": "^1.0.0"
-  },
-  "devDependencies": {},
+  "name": "oneflow-sdk-js",
+  "version": "2.0.15",
+  "description": "Javascript SDK for OneFlow",
+  "main": "./lib/oneflow",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "cover": "nyc --reporter=lcov mocha"
   },
-  "author": "hp",
-  "license": "MIT"
+  "author": "Nigel Watson",
+  "license": "OneFlow Master",
+  "dependencies": {
+    "axios": "^0.21.4",
+    "axios-retry": "^3.1.9"
+  },
+  "devDependencies": {
+    "lodash": "^4.17.21",
+    "mocha": "^9.0.2",
+    "nyc": "^15.1.0",
+    "semantic-release": "^19.0.2",
+    "should": "^13.2.3",
+    "sinon": "^11.1.1"
+  }
 }

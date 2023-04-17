@@ -1,26 +1,31 @@
-# Python
+# Python SDK for OneFlow #
 
-## General Information
+## Requirements ##
 
-Code was written in Python 3.5.2
-Uses the "requests" module so that will need to be installed in order to run the code
+python 3
+ 
+## Basic usage
 
-Windows: Go to location of easy_install.exe
+```python
 
-```easy_install.exe requests```
+import os
+from OneflowSDK import OneflowSDK
 
-Linux/Mac:
+#OneflowSDK instance
+client = OneflowSDK(os.environ['OFS_URL'],
+                    os.environ['OFS_TOKEN'],
+                    os.environ['OFS_SECRET'])
 
-```sudo easy_install requests```
+# ... Fill in requet path and data
 
-It also uses json, hmac, hashlib, datetime, base64, string, random modules as well. If they aren't found, you may need to install these as well.
+#make the POST request to the endpoint
+result = client.request('POST', api_path, data)
 
-## How To Run / Program Information
+```
+### Git ###
+    
+    git clone https://github.com/Oneflow/oneflow-sdk-python <your-target-directory>
+    
+## Samples ##
 
-Run on the command line using ```python siteflow_api.py```
-
-Before you can run the code, you need to provide the Key/Secret. There are two baseUrls provided. Uncomment the one that your Key/Secret was created/provided in.
-
-The initial functions will validate the premade order. The premade order structure follows the structure documented [here](https://developers.hp.com/printos/doc/order-json-structure) 
-
-Submitting an order will return information relating to it. See [../sample_output/submit_order_output.txt](https://github.com/HPInc/printos-siteflow-api-samples/blob/master/sample_output/submit_order_output.txt) to see the return information for a successful submission. Line 7 of the file is the id you pass into get_order(). To cancel one of the orders, you need the source account name (Line 241) and source order id (Line 234). The source order id is user generated (in this case, we generated a 6 character string).
+You can find order validation and submission examples in root folder

@@ -1,0 +1,7 @@
+composer.phar
+vendor/*
+.DS_Store
+samples/run.sh
+.idea
+coverage
+coverage.xml
